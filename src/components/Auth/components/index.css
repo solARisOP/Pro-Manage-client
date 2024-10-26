@@ -1,0 +1,89 @@
+.sign {
+    gap: 50px;
+    width: 80%;
+}
+
+.sign__display {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.sign__heading {
+    font-size: 33.08px;
+    font-weight: 600;
+    line-height: 45.04px;
+    text-align: center;
+    color: #343434;
+}
+
+.sign__input__container {
+    gap: 20px;
+    width: 80%;
+}
+
+.sign__input__wrapper {
+    display: flex;
+    align-items: center;
+    border: 1.38px solid #D0D0D0;
+    border-radius: 11px;
+    height: 40px;
+    padding-left: 5px;
+    width: 100%;
+}
+
+.sign__eye__icon {
+    margin-right: 8px;
+    margin-left: 5px;
+    width: 25px;
+    height: 25px;
+}
+
+.sign__input__icon {
+    margin-right: 5px;
+    width: 25px;
+    height: 25px;
+}
+
+.sign__input {
+    border: none;
+    outline: none;
+    flex: 1;
+}
+
+.sign__btn__container {
+    width: 80%;
+    gap: 30px;
+}
+
+.sign__btn {
+    border-radius: 50px;
+    height: 40px;
+    width: 100%;
+}
+
+.sign__btn--1 {
+    background: #17A2B8;
+    color: #FFFFFF;
+}
+
+.sign__btn--2 {
+    border: 1.38px solid #17A2B8;
+    color: #17A2B8;
+}
+
+.sign__btn__text {
+    font-size: 19.29px;
+    font-weight: 400;
+    line-height: 26.28px;
+    text-align: center;
+    color: #828282;
+}
+
+.sign__input__error {
+    color: red;
+    font-size: 10px;
+    font-weight: 400;
+}
+
