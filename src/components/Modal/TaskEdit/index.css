@@ -1,0 +1,283 @@
+.taskedit__body {
+    width: 650px;
+    height: 550px;
+    border-radius: 11px;
+    background-color: #FFFFFF;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+    gap: 20px;
+    align-items: center;
+}
+
+.taskedit__head__container {
+    width: 100%;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: 0.5px;
+}
+
+.taskedit__head__input {
+    outline: none;
+    width: 100%;
+}
+
+.taskedit__inputs {
+    border: 1px solid #E2E2E2;
+    box-shadow: 0px 1px 2px 0px #4D40551A;
+    border-radius: 4px;
+    padding: 10px;
+}
+
+.taskedit__head__input::placeholder {
+    color: #9B959F;
+}
+
+.star__mark__red {
+    color: #FF0000;
+}
+
+.taskedit__priority__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.taskedit__text {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: 0.5px;
+}
+
+.taskedit__priority__btn {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 21px;
+    border: 1px solid #E2E2E2;
+    border-radius: 8px;
+    padding: 7px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #767575;
+}
+
+.taskedit__priority__select {
+    background-color: #EEECEC;
+}
+
+.taskedit__priority__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.priority__dot--red {
+    background-color: #FF2473;
+}
+
+.priority__dot--blue {
+    background-color: #18B0FF;
+}
+
+.priority__dot--green {
+    background-color: #63C05B;
+}
+
+.taskedit__assign__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    position: relative;
+}
+
+.taskedit__assign {
+    width: 85%;
+    color: #9B959F;
+}
+
+.taskedit__assign__list {
+    width: 85%;
+    position: absolute;
+    top: 100%;
+    right: 0px;
+    height: fit-content;
+    max-height: 250px;
+    overflow: auto;
+    background-color: #FFFFFF;
+    border: 1px solid #7E7A7A14;
+    border-radius: 4px;
+}
+
+.assign__list__element {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-inline: 15px;
+}
+
+.assign__list__element__email {
+    width: 80%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: 0.5px;
+    color: #20102B;
+}
+
+.assign__list__element__logo {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #FFEBEB;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.assign__list__element__btn {
+    border: 1px solid #E2E2E2;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 21px;
+    color: #767575;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-radius: 8px;
+    width: 150px;
+}
+
+.taskedit__checklist__container {
+    width: 100%;
+    flex: 1 1 0%;
+}
+
+.taskedit__checklist {
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    height: fit-content;
+    max-height: 150px;
+    overflow: auto;
+}
+
+.checklist__input__wrapper {
+    display: flex;
+    align-items: center;
+    border: 1px solid #E2E2E2;
+    border-radius: 12px;
+    height: 45px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    margin-inline: 5px;
+}
+
+.checklist__input {
+    border: none;
+    outline: none;
+    flex: 1;
+}
+
+.checklist__input__bin {
+    margin-right: 8px;
+    margin-left: 5px;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+}
+
+.checklist__input__check {
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    border-radius: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.checklist__check--0 {
+    border: 2px solid #E2E2E2;
+}
+
+.checklist__check--1 {
+    background-color: #17A2B8;
+    color: #FFFFFF;
+}
+
+.checklist__input__check--1 {
+    margin-left: 8px;
+    margin-right: 5px;
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+    border-radius: 6px;
+}
+
+.taskedit__checklist__addmore {
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 19.36px;
+    color: #767575;
+}
+
+.taskedit__btn__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.taskedit__btn {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 19px;
+    width: 170px;
+    padding: 10px;
+    border-radius: 12px;
+}
+
+.taskedit__inner__btn__conatiner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.taskedit__btn--grey {
+    border: 1px solid #E2E2E2;
+    color: #707070;
+}
+
+.taskedit__btn--blue {
+    box-shadow: 0px 2px 12px 0px #82698C33;
+    background-color: #17A2B8;
+    color: #FFFFFF;
+}
+
+.taskedit__btn--red {
+    border: 1px solid #CF3636;
+    color: #CF3636;
+}
+
+.taskedit__calender {
+    border: none !important;
+    position: fixed;
+    border-radius: 8px;
+    box-shadow: 0px 12px 22px 0px #26242440;
+    margin-top: 100px;
+}

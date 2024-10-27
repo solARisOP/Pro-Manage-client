@@ -6,12 +6,12 @@ import Update from "./components/Update/Update.jsx"
 
 function App() {
 
-  return (
-    <>
-      <Sidebar/>
-      <Update />
-    </>
-  )
+	return (
+		<>
+			<Sidebar />
+			<Home />
+		</>
+	)
 }
 
 export default App

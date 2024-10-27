@@ -158,7 +158,7 @@ function SignMode({ mode }) {
                         <div className="sign__input__wrapper">
                             <img className="sign__input__icon" src={PasswordIcon} />
                             <input type={password.password ? 'password' : 'text'} placeholder="Password" className="sign__input" value={formData.password} onChange={updateFeilds.password} />
-                            <img className="sign__eye__icon" src={EyeIcon} onClick={togglePasswordVisibility} style={{cursor: 'pointer'}} data-password={1}/>
+                            <img className="sign__eye__icon" src={EyeIcon} onClick={togglePasswordVisibility} data-password={1}/>
                         </div>
                         {formErrors.password ? <span className='sign__input__error'>password should be within 6 to 15 characters and should not contain spaces</span> : null}
                     </div>
@@ -181,7 +181,7 @@ function SignMode({ mode }) {
                         <div className="sign__input__wrapper">
                             <img className="sign__input__icon" src={PasswordIcon} />
                             <input type={password.password ? 'password' : 'text'} placeholder="Password" className="sign__input" value={formData.password} onChange={updateFeilds.password} />
-                            <img className="sign__eye__icon" src={EyeIcon} onClick={togglePasswordVisibility} style={{cursor: 'pointer'}} data-password={1}/>
+                            <img className="sign__eye__icon" src={EyeIcon} onClick={togglePasswordVisibility} data-password={1}/>
                         </div>
                         {formErrors.password ? <span className='sign__input__error'>password should be within 6 to 15 characters and should not contain spaces</span> : null}
                     </div>
@@ -189,7 +189,7 @@ function SignMode({ mode }) {
                         <div className="sign__input__wrapper">
                             <img className="sign__input__icon" src={PasswordIcon} />
                             <input type={password.cnfPassword ? 'password' : 'text'} placeholder="Confirm Password" className="sign__input" value={formData.cnfPassword} onChange={updateFeilds.cnfPassword} />
-                            <img className="sign__eye__icon" src={EyeIcon} onClick={togglePasswordVisibility} style={{cursor: 'pointer'}}/>
+                            <img className="sign__eye__icon" src={EyeIcon} onClick={togglePasswordVisibility}/>
                         </div>
                         {formErrors.cnfPassword ? <span className='sign__input__error'>passwords do not match</span> : null}
                     </div>

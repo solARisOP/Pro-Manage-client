@@ -1,0 +1,14 @@
+.modal__layout {
+    position: fixed;
+    inset: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+}
+
+.modal__main__layout {
+    position: fixed;
+    inset: 0;
+    background-color: #303D438C;
+}
