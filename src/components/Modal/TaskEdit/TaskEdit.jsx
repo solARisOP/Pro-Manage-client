@@ -19,9 +19,10 @@ function TaskEdit({edit, toggleModal, idx}) {
 	const [dueDate, setDueDate] = useState(null);
 	const [checklist, setChecklist] = useState([]);
 	const [members, setMembers] = useState({});
+	const [originalMembers, setOriginalMembers] = useState({});
 	const [users, setUsers] = useState([]);
 	const [checkCnt, setCheckCnt] = useState(0);
-
+	
 	useEffect(() => {
 		const fetchData = async() => {
 			try {
@@ -43,6 +44,12 @@ function TaskEdit({edit, toggleModal, idx}) {
 					task.checklist.forEach(x=>cnt+=x.isDone)
 					setCheckCnt(cnt)
 					setUsers([...unassignedUsers, ...task.members])
+					task.members.forEach(x=>{
+						if(x.canUnassign) {
+							setMembers(res=>({...res, [x.user._id] : 1}))
+							setOriginalMembers(res=>({...res, [x.user._id] : 1}))
+						}
+					})
 				}
 			} catch (error) {
 				console.log(error.response?.data?.message || error.message);
@@ -148,7 +155,33 @@ function TaskEdit({edit, toggleModal, idx}) {
 		}
 
 		if(edit) {
-
+			const assign = [], unassign = [];
+			for (const key in originalMembers) {
+				if(!members[key]) {
+					unassign.push(key)
+				}
+			}
+			for (const key in members) {
+				if(!originalMembers[key]) {
+					assign.push(key)
+				}
+			}
+			try {			
+				await axios.patch(`${apiUrl}/task/${idx}`, {
+					title,
+					priority,
+					dueDate,
+					checklist,
+					assign,
+					unassign
+				}, {
+					withCredentials: true
+				})
+				toggleModal(0)
+				toast.success('task updated sucessfully')
+			} catch (error) {
+				toast.error(error.response?.data?.message || error.message)
+			}
 		}
 		else {
 			try {
@@ -172,17 +205,19 @@ function TaskEdit({edit, toggleModal, idx}) {
 	return (
 		<Modal>
 			<div className="taskedit__body">
+
 				<div className="taskedit__head__container">
 					<p>Title <span className="star__mark__red">*</span></p>
 					<input type="text" className="taskedit__head__input taskedit__inputs" placeholder="Enter Task Title" value={title} onChange={updateTask.title} />
 				</div>
+
 				<div className="taskedit__priority__container">
 					<p className="taskedit__text">Select Priority <span className="star__mark__red">*</span></p>
 					<button className={`taskedit__priority__btn ${priority==='high' ? "taskedit__priority__select" : ""}`} value="high" onClick={updateTask.priority}>
 						<div className="taskedit__priority__dot priority__dot--red" /> 
 						<p>HIGH PRIORITY</p>
 					</button>
-					<button className={`taskedit__priority__btn ${priority==='mid' ? "taskedit__priority__select" : ""}`} value="mid" onClick={updateTask.priority}>
+					<button className={`taskedit__priority__btn ${priority==='moderate' ? "taskedit__priority__select" : ""}`} value="moderate" onClick={updateTask.priority}>
 						<div className="taskedit__priority__dot priority__dot--blue" /> 
 						<p>MODERATE PRIORITY</p>
 					</button>
@@ -197,7 +232,7 @@ function TaskEdit({edit, toggleModal, idx}) {
 					<div className="taskedit__inputs taskedit__assign" onClick={toggleList}> Add a assignee</div>
 					{assignList ? <div className="taskedit__assign__list">
 						{users.map(x=>
-							<div className="assign__list__element">
+							<div className={`assign__list__element ${x.user && !x.canUnassign ? "assign__unlist__element" : "" }`} >
 								<div className="assign__list__element__email">
 									<div className="assign__list__element__logo">{`${x.user?.email || x.email}`.slice(0,2).toUpperCase()}</div>
 									<p>{`${x.user?.email || x.email}`.slice(0, 26) + (`${x.user?.email || x.email}`.length > 26 ? "..." : "")}</p>
@@ -229,7 +264,9 @@ function TaskEdit({edit, toggleModal, idx}) {
 						<button className="taskedit__btn taskedit__btn--blue" onClick={submitTask}>Save</button>
 					</div>
 				</div>
+
 				{calenderView ?  <Calendar onChange={updateTask.dueDate} value={dueDate} className='taskedit__calender' /> : null}
+
 			</div>
 		</ Modal>
 	)

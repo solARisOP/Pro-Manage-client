@@ -1,6 +1,14 @@
-
 .home {
-    width: 100%;
-    height: 100%;
+    width: 85%;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+}
+
+.home__body {
+    display: flex;
     overflow: auto;
+    gap: 20px;
+    width: 100%;
+    height: 100%
 }

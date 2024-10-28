@@ -123,6 +123,12 @@
     margin-inline: 15px;
 }
 
+.assign__unlist__element {
+    pointer-events: none; 
+    background-color: #EEECEC;
+    border-radius: 25px;
+}
+
 .assign__list__element__email {
     width: 80%;
     display: flex;

@@ -1,12 +1,16 @@
 import './index.css'
-import { MdOutlineGroup } from "react-icons/md";
+import peopleIcon from "../../../assets/people.svg";
+import dropIcon from "../../../assets/drop.svg";
 import AddPeople from "../../Modal/AddPeople/AddPeople.jsx";
 import AddConfirm from "../../Modal/AddConfirm/AddConfirm.jsx";
 import ConfirmModal from "../../Modal/ConfirmModal/ConfirmModal.jsx";
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 const date = new Date()
 function Header() {
+    
+	const user = useSelector(state=>state.user)
 
     const [addPeople, setAddPeople] = useState(0)
     const [addconfirm, setAddConfirm] = useState(0)
@@ -26,20 +30,20 @@ function Header() {
 
   return (
     <>
-        <div className='head__section head__padd'>
-            <p className='head__text__1'> Welcome Kumar!</p>
+        <div className='head__section'>
+            <p className='head__text__1'> Welcome {user?.name}!</p>
             <p className='head__text__2 head__text__grey'>{date.toDateString()}</p>
         </div>
-        <div className='head__section head__padd'>
+        <div className='head__section'>
             <div className='head__section' style={{gap: '20px'}}>
                 <p className='head__text__3'> Board</p>
-                <div className='head__section head__text__grey' style={{gap: '5px', cursor: 'pointer'}} onClick={()=>toggleAddPeople(1)}>
-                    <MdOutlineGroup size={20} />
+                <div className='head__section head__text__grey' style={{gap: '5px', cursor: 'pointer', marginBottom: '0'}} onClick={()=>toggleAddPeople(1)}>
+                    <img src={peopleIcon} />
                     <p className='head__text__4'>Add People</p>
                 </div>
             </div>
             <div>
-                <p className='head__text__5'>This week v</p>
+                <p className='head__text__5'>This week <img src={dropIcon} /></p>
             </div>
         </div>
 

@@ -1,0 +1,105 @@
+.card {
+    border-radius: 20px;
+    padding: 20px;
+    background-color: #FFFFFF;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.card__head {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.card__priority__text {
+    font-size: 8px;
+    font-weight: 500;
+    line-height: 12px;
+    color: #707070;
+}
+
+.card__flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card__priority__dot {
+    height: 10px;
+    width : 10px;
+    border-radius : 50%;
+}
+
+.card__priority--low {
+    background-color: #63C05B;
+}
+.card__priority--moderate {
+    background-color: #18B0FF;
+}
+.card__priority--high {
+    background-color: #FF2473;
+}
+
+.card__title {
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 27px;
+}
+
+.card__checklist__title {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 16.94px;
+}
+
+.card__btn {
+    border-radius: 8px;
+    background-color: #DBDBDB;
+    font-size: 8px;
+    font-weight: 500;
+    line-height: 12px;
+    color: #5A5A5A;
+    width: 60px;
+    height: 25px;
+}
+
+.card__checklist {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 5px;
+    max-height: 200px;
+    overflow: auto;
+}
+
+.card__checklist__text {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 16.94px;
+}
+
+.card__checklist__element {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border: 1px solid #E2E2E2;
+    border-radius: 12px;
+    gap: 10px;
+}
+
+.card__checklist__checkbox {
+    width: 18px;
+    height: 18px;
+    border-radius: 6px;
+}
+
+.card__checklist__checkbox--0 {
+    border: 2px solid #E2E2E2;
+}
+
+.card__checklist__checkbox--1 {
+    background-color: #17A2B8;
+}
