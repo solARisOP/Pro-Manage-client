@@ -1,5 +1,5 @@
 import React from 'react'
-import Modal from '../Modal.jsx'
+import  Modal from '../Modal.jsx'
 import './index.css'
 
 function AddConfirm({toggleAddConfirm}) {

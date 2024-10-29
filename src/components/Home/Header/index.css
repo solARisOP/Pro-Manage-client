@@ -21,7 +21,7 @@
     color: #707070;
 }
 
-.head__text__3{
+.head__text__3 {
     font-size: 29px;
     font-weight: 500;
     line-height: 43.5px;
@@ -37,4 +37,28 @@
     font-size: 16px;
     font-weight: 400;
     line-height: 24px;
+}
+
+.head__options {
+    position: absolute;
+    z-index: 1;
+    width: 150px;
+    height: 110px;
+    border-radius: 12px;
+    padding-inline: 20px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    background-color: #FFFFFF;
+    box-shadow: 0px 2px 22px 0px #7E7A7A40;
+    display: flex;
+    flex-direction: column;
+    right: 0px;
+    top: 25px;
+}
+
+.head__options__btn {
+    flex : 1 1 0%;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: left;
 }

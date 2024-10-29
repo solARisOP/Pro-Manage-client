@@ -27,6 +27,30 @@
     align-items: center;
 }
 
+.card__options {
+    position: absolute;
+    z-index: 1;
+    width: 150px;
+    height: 110px;
+    border-radius: 12px;
+    padding-inline: 20px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    background-color: #FFFFFF;
+    box-shadow: 0px 2px 22px 0px #7E7A7A40;
+    display: flex;
+    flex-direction: column;
+    right: 0px;
+    top: 10px;
+}
+
+.card__options__btn {
+    flex : 1 1 0%;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: left;
+}
+
 .card__priority__dot {
     height: 10px;
     width : 10px;
@@ -64,6 +88,17 @@
     color: #5A5A5A;
     width: 60px;
     height: 25px;
+}
+
+.card__btn--red {
+    background-color: #CF3636;
+    color: #FFFFFF;
+}
+
+.card__btn--green {
+    background-color: #63C05B;
+    color: #FFFFFF;
+
 }
 
 .card__checklist {

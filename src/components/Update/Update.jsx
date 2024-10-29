@@ -1,23 +1,27 @@
 import './index.css'
-import EyeIcon from '../../assets/eye.svg'
-import EmailIcon from '../../assets/email.svg'
-import PasswordIcon from '../../assets/password.svg'
-import NameIcon from '../../assets/name.svg'
-import { useDispatch } from 'react-redux'
+import { 
+	eyeIcon, 
+	emailIcon, 
+	passwordIcon, 
+	nameIcon
+ } from '../../assets'
+import { useDispatch, useSelector } from 'react-redux'
 import { useState } from 'react'
 import { toast } from 'react-toastify'
 import axios from 'axios'
 import { setUser } from '../../features/storySlice'
+import Sidebar from '../Sidebar/Sidebar'
 
 const apiUrl = import.meta.env.VITE_SERVER_API;
 
 function Update() {
 
 	const dispatch = useDispatch()
+	const user = useSelector(state=>state.user)
 
 	const [formData, setFormData] = useState({
-		name: "",
-		email: "",
+		name: user.name,
+		email: user.email,
 		oldPassword: "",
 		password: ""
 	})
@@ -138,42 +142,45 @@ function Update() {
 	}
 
 	return (
-		<div className='update'>
-			<p className='update__heading'>Settings</p>
-			<div className='update__input__container update__display'>
-				<div style={{ width: '100%' }}>
-					<div className="update__input__wrapper">
-						<img className="update__input__icon" src={NameIcon} />
-						<input type="text" placeholder="Name" className="update__input" value={formData.name} onChange={updateFeilds.name} />
+		<>
+			<Sidebar />
+			<div className='update'>
+				<p className='update__heading'>Settings</p>
+				<div className='update__input__container update__display'>
+					<div style={{ width: '100%' }}>
+						<div className="update__input__wrapper">
+							<img className="update__input__icon" src={nameIcon} />
+							<input type="text" placeholder="Name" className="update__input" value={formData.name} onChange={updateFeilds.name} />
+						</div>
+						{formErrors.name ? <span className='update__input__error'>name should not be empty</span> : null}
 					</div>
-					{formErrors.name ? <span className='update__input__error'>name should not be empty</span> : null}
-				</div>
-				<div style={{ width: '100%' }}>
-					<div className="update__input__wrapper">
-						<img className="update__input__icon" src={EmailIcon} />
-						<input type="text" placeholder="Email" className="update__input" value={formData.email} onChange={updateFeilds.email} />
+					<div style={{ width: '100%' }}>
+						<div className="update__input__wrapper">
+							<img className="update__input__icon" src={emailIcon} />
+							<input type="text" placeholder="Email" className="update__input" value={formData.email} onChange={updateFeilds.email} />
+						</div>
+						{formErrors.email ? <span className='update__input__error'>invalid email</span> : null}
 					</div>
-					{formErrors.email ? <span className='update__input__error'>invalid email</span> : null}
-				</div>
-				<div style={{ width: '100%' }}>
-					<div className="update__input__wrapper">
-						<img className="update__input__icon" src={PasswordIcon} />
-						<input type={password.oldPassword ? 'password' : 'text'} placeholder="Old Password" className="update__input" value={formData.oldPassword} onChange={updateFeilds.oldPassword} />
-						<img className="update__eye__icon" src={EyeIcon} onClick={togglePasswordVisibility} style={{ cursor: 'pointer' }} />
+					<div style={{ width: '100%' }}>
+						<div className="update__input__wrapper">
+							<img className="update__input__icon" src={passwordIcon} />
+							<input type={password.oldPassword ? 'password' : 'text'} placeholder="Old Password" className="update__input" value={formData.oldPassword} onChange={updateFeilds.oldPassword} />
+							<img className="update__eye__icon" src={eyeIcon} onClick={togglePasswordVisibility} style={{ cursor: 'pointer' }} />
+						</div>
+						{formErrors.oldPassword ? <span className='update__input__error'>password should be within 6 to 15 characters and should not contain spaces</span> : null}
 					</div>
-					{formErrors.oldPassword ? <span className='update__input__error'>password should be within 6 to 15 characters and should not contain spaces</span> : null}
-				</div>
-				<div style={{ width: '100%' }}>
-					<div className="update__input__wrapper">
-						<img className="update__input__icon" src={PasswordIcon} />
-						<input type={password.password ? 'password' : 'text'} placeholder="New Password" className="update__input" value={formData.password} onChange={updateFeilds.password} />
-						<img className="update__eye__icon" src={EyeIcon} onClick={togglePasswordVisibility} style={{ cursor: 'pointer' }} data-password={1} />
+					<div style={{ width: '100%' }}>
+						<div className="update__input__wrapper">
+							<img className="update__input__icon" src={passwordIcon} />
+							<input type={password.password ? 'password' : 'text'} placeholder="New Password" className="update__input" value={formData.password} onChange={updateFeilds.password} />
+							<img className="update__eye__icon" src={eyeIcon} onClick={togglePasswordVisibility} style={{ cursor: 'pointer' }} data-password={1} />
+						</div>
+						{formErrors.password ? <span className='update__input__error'>password should be within 6 to 15 characters and should not contain spaces</span> : null}
 					</div>
-					{formErrors.password ? <span className='update__input__error'>password should be within 6 to 15 characters and should not contain spaces</span> : null}
+					<button className='update__btn' onClick={submitForm}>Update</button>
 				</div>
-				<button className='update__btn' onClick={submitForm}>Update</button>
 			</div>
-		</div>
+		</>
 	)
 }
 

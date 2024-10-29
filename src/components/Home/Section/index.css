@@ -4,7 +4,8 @@
     border-radius: 10px;
     background-color: #EEF2F5;
     padding: 20px;
-    overflow: auto;
+    display: flex;
+    flex-direction: column;
 }
 
 .section__head {
@@ -13,6 +14,11 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+}
+
+.section__addtask {
+    display: flex;
+    gap: 25px;
 }
 
 .section__head__text {
@@ -24,7 +30,7 @@
 .section__tasks {
     overflow: auto;
     width: 100%;
-    flex: 100%;
+    flex: 1 1 0%;
 }
 
 @media (min-width : 1600px) {

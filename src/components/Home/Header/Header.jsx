@@ -1,20 +1,34 @@
 import './index.css'
-import peopleIcon from "../../../assets/people.svg";
-import dropIcon from "../../../assets/drop.svg";
-import AddPeople from "../../Modal/AddPeople/AddPeople.jsx";
-import AddConfirm from "../../Modal/AddConfirm/AddConfirm.jsx";
-import ConfirmModal from "../../Modal/ConfirmModal/ConfirmModal.jsx";
+import { 
+    peopleIcon, 
+    dropIcon
+ } from "../../../assets";
+import { 
+    AddPeople, 
+    AddConfirm
+ } from "../../Modal";
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { 
+    useDispatch, 
+    useSelector
+ } from 'react-redux';
+import axios from 'axios';
+import { 
+    changeTimeline, 
+    setTasks
+ } from '../../../features/storySlice';
+import { toast } from 'react-toastify';
+const apiUrl = import.meta.env.VITE_SERVER_API
 
 const date = new Date()
 function Header() {
     
-	const user = useSelector(state=>state.user)
-
+	const user = useSelector(state => state.user)
+	const feedTimeline = useSelector(state => state.feedTimeline)
+    const dispatch = useDispatch()
     const [addPeople, setAddPeople] = useState(0)
     const [addconfirm, setAddConfirm] = useState(0)
-    const [deleteModal, setDeleteModal] = useState(0)
+    const [timeline, setTimeline] = useState(0)
 
     const toggleAddPeople = (x) => {
         setAddPeople(x);
@@ -24,8 +38,21 @@ function Header() {
         setAddConfirm(x)
     }
 
-    const toggleDelete = (x) => {
-        setDeleteModal(x)
+    const filterByTime = async(e) => {
+        const value = e.target.value
+        try {
+            const {data : {data}} = await axios.get(`${apiUrl}/feed?timeline=${value}`, {
+                withCredentials: true
+            })
+            dispatch(setTasks(data))
+            dispatch(changeTimeline(value))
+        } catch (error) {
+            toast.error(error.response?.data?.message || error.message);
+        }
+    }
+
+    const toggleTimeline = ()=> {
+        setTimeline(res => !res)
     }
 
   return (
@@ -42,14 +69,18 @@ function Header() {
                     <p className='head__text__4'>Add People</p>
                 </div>
             </div>
-            <div>
-                <p className='head__text__5'>This week <img src={dropIcon} /></p>
+            <div style={{position: 'relative'}}>
+                <p className='head__text__5' onClick={toggleTimeline} style={{cursor: 'pointer'}}>{feedTimeline==='today' ? 'Today' : 'This ' + feedTimeline[0].toUpperCase() + feedTimeline.slice(1)} <img src={dropIcon} /></p>
+                {timeline ? <div className='head__options'>
+                    <button className='head__options__btn' onClick={filterByTime} value='today'>Today</button>
+                    <button className='head__options__btn' onClick={filterByTime} value='week'>This Week</button>
+                    <button className='head__options__btn' onClick={filterByTime} value='month'>This Month</button>
+                </div> : null}
             </div>
         </div>
 
         {addPeople ? <AddPeople toggleAddPeople={toggleAddPeople} toggleAddConfirm={toggleAddConfirm} /> : null}
         {addconfirm ? <AddConfirm toggleAddConfirm={toggleAddConfirm} /> : null}
-        {deleteModal ? <ConfirmModal toggleModal={toggleDelete} mode="Delete" /> : null}
     </>
   )
 }

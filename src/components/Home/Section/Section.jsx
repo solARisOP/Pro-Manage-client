@@ -1,13 +1,35 @@
 import './index.css'
-import dropCloseIcon from '../../../assets/dropClose.svg'
 import { useSelector } from 'react-redux'
 import Card from './Card/Card.jsx';
-import { useState } from 'react';
+import { 
+    useEffect, 
+    useState
+ } from 'react';
+import { TaskEdit } from '../../Modal';
+import { 
+    plusIcon,
+    dropCloseIcon
+ } from '../.../../../../assets'
 
 function Section({ name }) {
     const tasks = useSelector(state => state.tasks[name.toLowerCase()]);
+    
+    const [tasksOpen, setTasksOpen] = useState([])
 
-    const [tasksOpen, setTasksOpen] = useState(new Array(tasks.length).fill(0))
+	const [editTask, setEditTask] = useState(0)
+
+    useEffect(() => {
+        setTasksOpen(new Array(tasks.length).fill(0))
+    }, [tasks.length])
+    
+
+	const openEditTask = () => {
+		setEditTask(1)
+	}
+
+    const closeEditTask = () => {
+        setEditTask(0)
+    }
 
     const closeSection = ()=>{
         setTasksOpen(new Array(tasks.length).fill(0))
@@ -22,15 +44,22 @@ function Section({ name }) {
     }
 
     return (
-        <div className='section'>
-            <div className='section__head'>
-                <p className='section__head__text'>{name}</p>
-                <img src={dropCloseIcon} onClick={closeSection} style={{cursor: 'pointer'}} />
+        <>
+            <div className='section'>
+                <div className='section__head'>
+                    <p className='section__head__text'>{name}</p>
+                    <div className='section__addtask'>
+                        {name=='Todo' ? <img src={plusIcon} onClick={openEditTask} style={{cursor: 'pointer'}} /> : null}
+                        <img src={dropCloseIcon} onClick={closeSection} style={{cursor: 'pointer'}} />
+                    </div>
+                </div>
+                <div className='section__tasks'>
+                    {tasks.map((task, idx)=><Card task={task} isOpen={tasksOpen[idx]} idx={idx} toggleTask={toggleTask} />)}
+                </div>
             </div>
-            <div className='section__tasks'>
-                {tasks.map((task, idx)=><Card task={task} category={name} isOpen={tasksOpen[idx]} idx={idx} toggleTask={toggleTask} />)}
-            </div>
-        </div>
+
+            {editTask && name=='Todo' ? <TaskEdit closeModal={closeEditTask} /> : null}
+        </>
     )
 }
 

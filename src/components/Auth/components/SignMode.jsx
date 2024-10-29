@@ -1,19 +1,23 @@
 import { useState } from 'react'
 import './index.css'
-import EyeIcon from '../../../assets/eye.svg'
-import EmailIcon from '../../../assets/email.svg'
-import PasswordIcon from '../../../assets/password.svg'
-import NameIcon from '../../../assets/name.svg'
+import { 
+    eyeIcon, 
+    emailIcon,
+    passwordIcon, 
+    nameIcon
+ } from '../../../assets'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import { useDispatch } from 'react-redux'
-import { setUser } from '../../../features/storySlice'
+import { setTasks, setUser } from '../../../features/storySlice'
+import { Navigate, NavLink, useNavigate } from 'react-router-dom'
 
 const apiUrl = import.meta.env.VITE_SERVER_API;
 
 function SignMode({ mode }) {
 
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const [formData, setFormData] = useState({
         name: "",
@@ -109,33 +113,33 @@ function SignMode({ mode }) {
             setFormErrors(errors)
             return;
         }
-        console.log('here');
-
         
         try {
-            var res;
             if(mode === 'Register') {
-                res = await axios.post(`${apiUrl}/user`, {
+                const { data : { message } } = await axios.post(`${apiUrl}/user`, {
                     ...formData
                 }, {
                     withCredentials: true
                 })
+                navigate('/login')
+                toast.success(message)
             }
             else {
-                res = await axios.put(`${apiUrl}/user/login`, {
+                const { data : { data : user, message } } = await axios.put(`${apiUrl}/user/login`, {
                     ...formData
                 }, {
                     withCredentials: true
                 })
-                dispatch(setUser(res.data.data))
-            }
 
-            toast.success(res.data.message)
-            console.log(res.data.data);
+                const { data : { data : tasks } } = await axios.get(`${apiUrl}/feed?timeline=week`, {
+                    withCredentials: true
+                })
+                dispatch(setUser(user))
+                dispatch(setTasks(tasks))
+                toast.success(message)
+            }
         } catch (error) {
             toast.error(error.response?.data?.message || error.message)
-            console.log(error);
-            
         }
     }
     
@@ -149,47 +153,47 @@ function SignMode({ mode }) {
                 {mode === 'Login' ? <>
                     <div style={{ width: '100%' }}>
                         <div className="sign__input__wrapper">
-                            <img className="sign__input__icon" src={EmailIcon} />
+                            <img className="sign__input__icon" src={emailIcon} />
                             <input type="text" placeholder="Email" className="sign__input" value={formData.email} onChange={updateFeilds.email} />
                         </div>
                         {formErrors.email ? <span className='sign__input__error'>invalid email</span> : null}
                     </div>
                     <div style={{ width: '100%' }}>
                         <div className="sign__input__wrapper">
-                            <img className="sign__input__icon" src={PasswordIcon} />
+                            <img className="sign__input__icon" src={passwordIcon} />
                             <input type={password.password ? 'password' : 'text'} placeholder="Password" className="sign__input" value={formData.password} onChange={updateFeilds.password} />
-                            <img className="sign__eye__icon" src={EyeIcon} onClick={togglePasswordVisibility} data-password={1}/>
+                            <img className="sign__eye__icon" src={eyeIcon} onClick={togglePasswordVisibility} data-password={1}/>
                         </div>
                         {formErrors.password ? <span className='sign__input__error'>password should be within 6 to 15 characters and should not contain spaces</span> : null}
                     </div>
                 </> : <>
                     <div style={{ width: '100%' }}>
                         <div className="sign__input__wrapper">
-                            <img className="sign__input__icon" src={NameIcon} />
+                            <img className="sign__input__icon" src={nameIcon} />
                             <input type="text" placeholder="Name" className="sign__input" value={formData.name} onChange={updateFeilds.name} />
                         </div>
                         {formErrors.name ? <span className='sign__input__error'>name should not be empty</span> : null}
                     </div>
                     <div style={{ width: '100%' }}>
                         <div className="sign__input__wrapper">
-                            <img className="sign__input__icon" src={EmailIcon} />
+                            <img className="sign__input__icon" src={emailIcon} />
                             <input type="text" placeholder="Email" className="sign__input" value={formData.email} onChange={updateFeilds.email} />
                         </div>
                         {formErrors.email ? <span className='sign__input__error'>invalid email</span> : null}
                     </div>
                     <div style={{ width: '100%' }}>
                         <div className="sign__input__wrapper">
-                            <img className="sign__input__icon" src={PasswordIcon} />
+                            <img className="sign__input__icon" src={passwordIcon} />
                             <input type={password.password ? 'password' : 'text'} placeholder="Password" className="sign__input" value={formData.password} onChange={updateFeilds.password} />
-                            <img className="sign__eye__icon" src={EyeIcon} onClick={togglePasswordVisibility} data-password={1}/>
+                            <img className="sign__eye__icon" src={eyeIcon} onClick={togglePasswordVisibility} data-password={1}/>
                         </div>
                         {formErrors.password ? <span className='sign__input__error'>password should be within 6 to 15 characters and should not contain spaces</span> : null}
                     </div>
                     <div style={{ width: '100%' }}>
                         <div className="sign__input__wrapper">
-                            <img className="sign__input__icon" src={PasswordIcon} />
+                            <img className="sign__input__icon" src={passwordIcon} />
                             <input type={password.cnfPassword ? 'password' : 'text'} placeholder="Confirm Password" className="sign__input" value={formData.cnfPassword} onChange={updateFeilds.cnfPassword} />
-                            <img className="sign__eye__icon" src={EyeIcon} onClick={togglePasswordVisibility}/>
+                            <img className="sign__eye__icon" src={eyeIcon} onClick={togglePasswordVisibility}/>
                         </div>
                         {formErrors.cnfPassword ? <span className='sign__input__error'>passwords do not match</span> : null}
                     </div>
@@ -198,7 +202,9 @@ function SignMode({ mode }) {
             <div className='sign__btn__container sign__display'>
                 <button className='sign__btn sign__btn--1' onClick={submitForm}>{mode}</button>
                 <p className='sign__btn__text'>Have no account yet?</p>
-                <button className='sign__btn sign__btn--2'>{mode === 'Login' ? 'Register' : 'Login'}</button>
+                <NavLink className='sign__btn sign__btn--2' to={mode === 'Login' ? '/register' : '/login'}>
+                    {mode === 'Login' ? 'Register' : 'Login'}
+                </NavLink>
             </div>
         </div>
     )

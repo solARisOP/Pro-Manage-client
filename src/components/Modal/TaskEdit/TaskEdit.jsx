@@ -1,16 +1,31 @@
-import { useEffect, useState } from "react"
+import { 
+	useEffect, 
+	useRef, 
+	useState
+ } from "react"
 import Modal from "../Modal.jsx"
 import './index.css'
-import binIcon from '../../../assets/bin.svg'
-import checkIcon from '../../../assets/check.svg'
+import { 
+	binIcon, 
+	checkIcon
+ } from '../../../assets'
 import axios from "axios"
 import Calendar from 'react-calendar'
 import 'react-calendar/dist/Calendar.css';
 import { toast } from "react-toastify"
+import { useDispatch } from "react-redux"
+import { 
+	addTask, 
+	removeTask
+ } from "../../../features/storySlice.js"
 
 const apiUrl = import.meta.env.VITE_SERVER_API
 
-function TaskEdit({edit, toggleModal, idx}) {
+function TaskEdit({edit, closeModal, idx}) {
+
+	const dispatch = useDispatch()
+
+	const ref = useRef()
 
 	const [assignList, setAssignList] = useState(0)
 	const [calenderView, setCalenderView] = useState(0)
@@ -22,6 +37,7 @@ function TaskEdit({edit, toggleModal, idx}) {
 	const [originalMembers, setOriginalMembers] = useState({});
 	const [users, setUsers] = useState([]);
 	const [checkCnt, setCheckCnt] = useState(0);
+	const [task, setTask] = useState(null);
 	
 	useEffect(() => {
 		const fetchData = async() => {
@@ -40,6 +56,7 @@ function TaskEdit({edit, toggleModal, idx}) {
 					setPriority(task.priority)
 					setTitle(task.title)
 					setDueDate(task.dueDate)
+					setTask(task)
 					let cnt = 0;
 					task.checklist.forEach(x=>cnt+=x.isDone)
 					setCheckCnt(cnt)
@@ -142,7 +159,7 @@ function TaskEdit({edit, toggleModal, idx}) {
 				return
 			}
 		}
-		else if(!checklist.length) {
+		if(!checklist.length) {
 			toast.error("checklist cannot be empty")
 			return
 		}
@@ -154,6 +171,7 @@ function TaskEdit({edit, toggleModal, idx}) {
 			}
 		}
 
+		ref.current.style.pointerEvents = 'none'
 		if(edit) {
 			const assign = [], unassign = [];
 			for (const key in originalMembers) {
@@ -167,7 +185,7 @@ function TaskEdit({edit, toggleModal, idx}) {
 				}
 			}
 			try {			
-				await axios.patch(`${apiUrl}/task/${idx}`, {
+				const {data : {data}} = await axios.patch(`${apiUrl}/task/${idx}`, {
 					title,
 					priority,
 					dueDate,
@@ -177,7 +195,9 @@ function TaskEdit({edit, toggleModal, idx}) {
 				}, {
 					withCredentials: true
 				})
-				toggleModal(0)
+				dispatch(removeTask(task))
+				dispatch(addTask(data))
+				closeModal()
 				toast.success('task updated sucessfully')
 			} catch (error) {
 				toast.error(error.response?.data?.message || error.message)
@@ -185,7 +205,7 @@ function TaskEdit({edit, toggleModal, idx}) {
 		}
 		else {
 			try {
-				await axios.post(`${apiUrl}/task`, {
+				const {data : {data} } = await axios.post(`${apiUrl}/task`, {
 					title,
 					priority,
 					dueDate,
@@ -194,17 +214,19 @@ function TaskEdit({edit, toggleModal, idx}) {
 				}, {
 					withCredentials: true
 				})
-				toggleModal(0)
+				closeModal()
+				dispatch(addTask(data))
 				toast.success('task created sucessfully')
 			} catch (error) {
 				toast.error(error.response?.data?.message || error.message)
 			}
 		}
+		ref.current.style.pointerEvents = 'auto'
 	}
 
 	return (
 		<Modal>
-			<div className="taskedit__body">
+			<div className="taskedit__body" ref={ref}>
 
 				<div className="taskedit__head__container">
 					<p>Title <span className="star__mark__red">*</span></p>
@@ -260,7 +282,7 @@ function TaskEdit({edit, toggleModal, idx}) {
 				<div className="taskedit__btn__container">
 					<button className="taskedit__btn taskedit__btn--grey" onClick={toggleCalender}>Select Due Date</button>
 					<div className="taskedit__inner__btn__conatiner">
-						<button className="taskedit__btn taskedit__btn--red" onClick={()=>toggleModal(0)}>Cancel</button>
+						<button className="taskedit__btn taskedit__btn--red" onClick={closeModal}>Cancel</button>
 						<button className="taskedit__btn taskedit__btn--blue" onClick={submitTask}>Save</button>
 					</div>
 				</div>

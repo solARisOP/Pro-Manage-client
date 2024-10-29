@@ -1,49 +1,56 @@
 import './index.css'
-import { IoCubeOutline } from "react-icons/io5";
-import { MdOutlineSpaceDashboard } from "react-icons/md";
-import { GoDatabase } from "react-icons/go";
-import { IoSettingsOutline } from "react-icons/io5";
-import { HiOutlineLogout } from "react-icons/hi";
 import { useState } from 'react';
-import ConfirmModal from '../Modal/ConfirmModal/ConfirmModal.jsx';
+import { LogoutModal } from '../Modal';
+import { 
+	appIcon, 
+	dashboardIcon, 
+	databaseIcon, 
+	logoutIcon, 
+	settingsIcon
+ } from '../../assets';
+import { NavLink } from 'react-router-dom';
 
 function Sidebar() {
 	
 	const [logoutModal, setLogoutModal] = useState(0)
 
-	const toggleLogout = (x) => {
-        setLogoutModal(x)
-    }
+	const openLogout = ()=>{
+		setLogoutModal(1)
+	}
+
+	const closeLogout = ()=>{
+		setLogoutModal(0)
+	}
 
 	return (
 		<>
 			<div className="sidebar">
 				<div>
 					<div className='sidebar_head'>
-						<IoCubeOutline size={20} />
+						<img src={appIcon} />
 						Pro Manage
 					</div>
 					<ul className="sidebar__list">
-						<li className='sidebar__list__element list__element--selected element__text--black'>
-							<MdOutlineSpaceDashboard size={20} />
+						<NavLink className={({isActive})=>`sidebar__list__element ${isActive ? 'list__element--selected' : ''} element__text--black`} to='/'>
+							<img src={dashboardIcon} />
 							Board
-						</li>
-						<li className='sidebar__list__element element__text--grey'>
-							<GoDatabase size={20} />
+						</NavLink>
+						<NavLink className={({isActive})=>`sidebar__list__element ${isActive ? 'list__element--selected' : ''} element__text--black`} to='/analytics'>
+							<img src={databaseIcon} />
 							Analytics
-						</li>
-						<li className='sidebar__list__element element__text--grey'>
-							<IoSettingsOutline size={20} />
+						</NavLink>
+						<NavLink className={({isActive})=>`sidebar__list__element ${isActive ? 'list__element--selected' : ''} element__text--black`} to='/settings'>
+							<img src={settingsIcon} />
 							Settings
-						</li>
+						</NavLink>
 					</ul>
 				</div>
-				<div className='sidebar__list__element element__text--red' onClick={()=>toggleLogout(1)}>
-					<HiOutlineLogout size={20} />
+				<div className='sidebar__list__element element__text--red' onClick={openLogout}>
+					<img src={logoutIcon} alt="" />
 					Logout
 				</div>
 			</div>
-			{logoutModal ? <ConfirmModal toggleModal={toggleLogout} mode="Logout" /> : null}
+			{logoutModal ? <LogoutModal closeModal={closeLogout} mode="Logout" /> : null}
 		</>
 	)
 }

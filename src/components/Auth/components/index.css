@@ -72,6 +72,9 @@
 .sign__btn--2 {
     border: 1.38px solid #17A2B8;
     color: #17A2B8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .sign__btn__text {
