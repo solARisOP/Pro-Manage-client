@@ -30,7 +30,6 @@ const storySlice = createSlice({
                 progress : [],
                 done : []
             }
-            console.log(tasks);            
             tasks.forEach(task => state.tasks[task.category].push(task));
         },
         removeTask : (state, action) => {
