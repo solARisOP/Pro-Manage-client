@@ -177,8 +177,6 @@ function TaskEdit({edit, closeModal, currTask}) {
 				return;
 			}
 		}
-		console.log(dueDate.toISOString());
-		
 
 		ref.current.style.pointerEvents = 'none'
 		if(edit) {
@@ -197,7 +195,7 @@ function TaskEdit({edit, closeModal, currTask}) {
 				const {data : {data}} = await axios.patch(`${apiUrl}/task/${currTask._id}`, {
 					title,
 					priority,
-					...(dueDate && {dueDate : dueDate.toISOString()}),
+					...(dueDate && {dueDate : dueDate.toDateString()}),
 					checklist,
 					assign,
 					unassign,
@@ -224,7 +222,7 @@ function TaskEdit({edit, closeModal, currTask}) {
 				const {data : {data} } = await axios.post(`${apiUrl}/task`, {
 					title,
 					priority,
-					...(dueDate && {dueDate : dueDate.toISOString()}),
+					...(dueDate && {dueDate : dueDate.toDateString()}),
 					checklist,
 					members,
 					timeline
