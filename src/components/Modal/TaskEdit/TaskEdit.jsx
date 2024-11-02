@@ -178,6 +178,13 @@ function TaskEdit({edit, closeModal, currTask}) {
 			}
 		}
 
+		console.log(dueDate);
+		
+		if(dueDate) {
+			var date = new Date(dueDate)
+			date.setHours(0,0,0,0)
+		}
+
 		ref.current.style.pointerEvents = 'none'
 		if(edit) {
 			const assign = [], unassign = [];
@@ -195,7 +202,7 @@ function TaskEdit({edit, closeModal, currTask}) {
 				const {data : {data}} = await axios.patch(`${apiUrl}/task/${currTask._id}`, {
 					title,
 					priority,
-					...(dueDate && {dueDate : dueDate.toDateString()}),
+					...(dueDate && {dueDate : date.toDateString()}),
 					checklist,
 					assign,
 					unassign,
@@ -222,7 +229,7 @@ function TaskEdit({edit, closeModal, currTask}) {
 				const {data : {data} } = await axios.post(`${apiUrl}/task`, {
 					title,
 					priority,
-					...(dueDate && {dueDate : dueDate.toDateString()}),
+					...(dueDate && {date : dueDate.toDateString()}),
 					checklist,
 					members,
 					timeline
