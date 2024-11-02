@@ -177,6 +177,8 @@ function TaskEdit({edit, closeModal, currTask}) {
 				return;
 			}
 		}
+		console.log(dueDate);
+		
 
 		ref.current.style.pointerEvents = 'none'
 		if(edit) {
