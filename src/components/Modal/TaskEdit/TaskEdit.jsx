@@ -208,7 +208,7 @@ function TaskEdit({edit, closeModal, currTask}) {
 				}, {
 					withCredentials: true
 				})
-				dispatch(removeTask(task))
+				dispatch(removeTask(currTask))
 				if(data) {
 					dispatch(addTask({...data, assignedBy : currTask.assignedBy}))
 				}
@@ -217,7 +217,7 @@ function TaskEdit({edit, closeModal, currTask}) {
 			} catch (error) {
 				if(error.response?.data?.statusCode == 403) {
 					closeModal()
-					dispatch(removeTask(task))
+					dispatch(removeTask(currTask))
 				}
 				toast.error(error.response?.data?.message || error.message)
 			}
