@@ -178,8 +178,6 @@ function TaskEdit({edit, closeModal, currTask}) {
 			}
 		}
 
-		console.log(dueDate);
-		
 		if(dueDate) {
 			var date = new Date(dueDate)
 			date.setHours(0,0,0,0)
@@ -229,7 +227,7 @@ function TaskEdit({edit, closeModal, currTask}) {
 				const {data : {data} } = await axios.post(`${apiUrl}/task`, {
 					title,
 					priority,
-					...(dueDate && {date : dueDate.toDateString()}),
+					...(dueDate && {dueDate : date.toDateString()}),
 					checklist,
 					members,
 					timeline
