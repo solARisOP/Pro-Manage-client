@@ -14,7 +14,7 @@ function Confirm({closeModal, mode, task}) {
 	const dispatch = useDispatch()
 	const modelRef = useRef()
 
-	const submit = async(e) => {
+	const submit = async() => {
 		modelRef.current.style.pointerEvents = 'none'
 		if(mode === 'Delete') {
 			try {

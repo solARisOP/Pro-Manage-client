@@ -1,4 +1,3 @@
-import React from 'react'
 import './index.css'
 import { groupIcon } from "../../assets"
 import SignMode from './components/SignMode.jsx'

@@ -10,7 +10,7 @@ import axios from 'axios'
 import { toast } from 'react-toastify'
 import { useDispatch } from 'react-redux'
 import { setTasks, setUser } from '../../../features/storySlice'
-import { Navigate, NavLink, useNavigate } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 
 const apiUrl = import.meta.env.VITE_SERVER_API;
 
@@ -142,7 +142,6 @@ function SignMode({ mode }) {
             toast.error(error.response?.data?.message || error.message)
         }
     }
-    
 
     return (
         <div className='sign sign__display'>

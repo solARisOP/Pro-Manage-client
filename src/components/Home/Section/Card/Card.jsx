@@ -45,7 +45,7 @@ function Card({ task, isOpen, toggleTask }) {
     }, [task.checklist])
 
 
-    const convertDate = (date) => {
+    const convertDate = () => {
         const dateStr = new Date(task.dueDate).toDateString().split(" ");
         return `${dateStr[1]} ${dateStr[2]}`
     }
