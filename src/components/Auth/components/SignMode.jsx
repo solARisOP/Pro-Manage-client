@@ -1,4 +1,7 @@
-import { useState } from 'react'
+import { 
+    useRef, 
+    useState
+ } from 'react'
 import './index.css'
 import { 
     eyeIcon, 
@@ -16,6 +19,7 @@ const apiUrl = import.meta.env.VITE_SERVER_API;
 
 function SignMode({ mode }) {
 
+    const ref = useRef()
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
@@ -92,7 +96,6 @@ function SignMode({ mode }) {
     }
 
     const submitForm = async () => {
-
         const errors = {}
         if (!/[A-Za-z0-9\._%+\-]+@[A-Za-z0-9\.\-]+\.[A-Za-z]{2,}/.test(formData.email)) {
             errors.email = 1;
@@ -113,7 +116,7 @@ function SignMode({ mode }) {
             setFormErrors(errors)
             return;
         }
-        
+        ref.current.style.pointerEvents = 'none'
         try {
             if(mode === 'Register') {
                 const { data : { message } } = await axios.post(`${apiUrl}/user`, {
@@ -141,10 +144,11 @@ function SignMode({ mode }) {
         } catch (error) {
             toast.error(error.response?.data?.message || error.message)
         }
+        ref.current.style.pointerEvents = 'auto'
     }
 
     return (
-        <div className='sign sign__display'>
+        <div className='sign sign__display' ref={ref}>
             <p className='sign__heading'>
                 {mode}
             </p>

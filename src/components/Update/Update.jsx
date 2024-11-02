@@ -9,7 +9,10 @@ import {
 	useDispatch, 
 	useSelector
  } from 'react-redux'
-import { useState } from 'react'
+import { 
+	useRef, 
+	useState
+ } from 'react'
 import { toast } from 'react-toastify'
 import axios from 'axios'
 import { setUser } from '../../features/storySlice'
@@ -19,6 +22,7 @@ const apiUrl = import.meta.env.VITE_SERVER_API;
 
 function Update() {
 
+	const ref = useRef()
 	const dispatch = useDispatch()
 	const user = useSelector(state=>state.user)
 
@@ -94,7 +98,7 @@ function Update() {
 		})
 	}
 
-	const submitForm = async () => {
+	const submitForm = async (e) => {
 
 		const x = [formData.email, formData.name, formData.password].filter(x => x.trim())
 		if (x.length > 1) {
@@ -126,7 +130,8 @@ function Update() {
 			field = 'password'
 		}
 		else field = 'name'
-
+		
+		e.target.style.pointerEvents = 'none'
 		try {
 			const { data : { message } } = await axios.patch(`${apiUrl}/user/${field}`, {
 				content: formData[field],
@@ -140,12 +145,13 @@ function Update() {
 			toast.error(error.response?.data?.message || error.message)
 			console.log(error);
 		}
+		e.target.style.pointerEvents = 'auto'
 	}
 
 	return (
 		<>
 			<Sidebar />
-			<div className='update'>
+			<div className='update' ref={ref}>
 				<p className='update__heading'>Settings</p>
 				<div className='update__input__container update__display'>
 					<div style={{ width: '100%' }}>
