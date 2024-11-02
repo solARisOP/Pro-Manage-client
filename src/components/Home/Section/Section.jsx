@@ -14,12 +14,18 @@ import {
 function Section({ name }) {
     const tasks = useSelector(state => state.tasks[name.toLowerCase()]);
     
-    const [tasksOpen, setTasksOpen] = useState([])
+    const [tasksOpen, setTasksOpen] = useState({})
 
 	const [editTask, setEditTask] = useState(0)
 
     useEffect(() => {
-        setTasksOpen(new Array(tasks.length).fill(0))
+        setTasksOpen(()=>{
+            const newObj = {}
+            for (const task of tasks) {
+                newObj[task._id] = 0
+            }
+            return newObj
+        })
     }, [tasks.length])
     
 
@@ -37,9 +43,9 @@ function Section({ name }) {
 
     const toggleTask = (idx) => {
         setTasksOpen(res=>{
-            const arr = [...res]
-            arr[idx] = !arr[idx]
-            return arr
+            const Obj = {...res}
+            Obj[idx] = !Obj[idx]
+            return Obj
         })
     }
 
@@ -54,7 +60,7 @@ function Section({ name }) {
                     </div>
                 </div>
                 <div className='section__tasks'>
-                    {tasks.map((task, idx)=><Card task={task} isOpen={tasksOpen[idx]} idx={idx} toggleTask={toggleTask} />)}
+                    {tasks.map(task => <Card task={task} isOpen={tasksOpen[task._id]} toggleTask={toggleTask} key={task._id} />)}
                 </div>
             </div>
 

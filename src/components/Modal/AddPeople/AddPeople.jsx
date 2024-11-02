@@ -23,8 +23,7 @@ function AddPeople({toggleAddPeople, toggleAddConfirm}) {
 			await axios.post(`${apiUrl}/user/dashboard`, {email}, {
 				withCredentials: true
 			})
-			toast.success("user added to dashboard successfully")
-			toggleAddConfirm(1)
+			toggleAddConfirm(email)
 			toggleAddPeople(0)
 		} catch (error) {
 			toast.error(error.response?.data?.message || error.message)

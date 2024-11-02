@@ -13,7 +13,7 @@ import axios from "axios"
 import Calendar from 'react-calendar'
 import 'react-calendar/dist/Calendar.css';
 import { toast } from "react-toastify"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { 
 	addTask, 
 	removeTask
@@ -21,9 +21,10 @@ import {
 
 const apiUrl = import.meta.env.VITE_SERVER_API
 
-function TaskEdit({edit, closeModal, idx}) {
+function TaskEdit({edit, closeModal, currTask}) {
 
 	const dispatch = useDispatch()
+	const timeline = useSelector(state => state.feedTimeline)
 
 	const ref = useRef()
 
@@ -49,7 +50,7 @@ function TaskEdit({edit, closeModal, idx}) {
 					setUsers(data)
 				}
 				else {
-					const {data : {data : {task, unassignedUsers}}} = await axios.get(`${apiUrl}/task/edit?key=${idx}`, {
+					const {data : {data : {task, unassignedUsers}}} = await axios.get(`${apiUrl}/task/edit?key=${currTask._id}`, {
 						withCredentials: true
 					})
 					setChecklist(task.checklist)
@@ -69,7 +70,11 @@ function TaskEdit({edit, closeModal, idx}) {
 					})
 				}
 			} catch (error) {
-				console.log(error.response?.data?.message || error.message);
+				if(error.response?.data?.message == 'task does not exists or does not belong to you') {
+					dispatch(removeTask(currTask))
+				}
+				closeModal()
+				toast.error(error.response?.data?.message || error.message)
 			}
 		}
 		fetchData()
@@ -90,8 +95,19 @@ function TaskEdit({edit, closeModal, idx}) {
 		priority: (e) => {
 			setPriority(e.currentTarget.value)
 		},
-		dueDate: (date) => {		
-			setDueDate(date)
+		dueDate: (date) => {				
+			setDueDate(res => { 
+				date = new Date(date);
+				date.setHours(0, 0, 0, 0)
+
+				const oldDate = new Date(res);
+				oldDate.setHours(0, 0, 0, 0)
+
+				const a = oldDate.getTime()
+				const b = date.getTime()			
+
+				return a === b ? "" : date
+			})
 		},
 		updateChecklist : (e) => {
 			const idx = parseInt(e.target.dataset.idx)
@@ -136,13 +152,12 @@ function TaskEdit({edit, closeModal, idx}) {
 				else {
 					newObj[idx] = 1;
 				}
-				console.log(newObj);
 				return newObj
 			})
 		}
 	}
 
-	const submitTask = async() => {
+	const submitTask = async() => {		
 		if(!title.trim()) {
 			toast.error("title cannot be empty")
 			return
@@ -151,15 +166,7 @@ function TaskEdit({edit, closeModal, idx}) {
 			toast.error("select a priority type")
 			return
 		}
-		else if(dueDate) {
-			const now = new Date()
-			now.setHours(0,0,0,0)
-			if(dueDate < now) {
-				toast.error("date should be greater should be greater than equal to today's date")
-				return
-			}
-		}
-		if(!checklist.length) {
+		else if(!checklist.length) {
 			toast.error("checklist cannot be empty")
 			return
 		}
@@ -185,21 +192,28 @@ function TaskEdit({edit, closeModal, idx}) {
 				}
 			}
 			try {			
-				const {data : {data}} = await axios.patch(`${apiUrl}/task/${idx}`, {
+				const {data : {data}} = await axios.patch(`${apiUrl}/task/${currTask._id}`, {
 					title,
 					priority,
 					dueDate,
 					checklist,
 					assign,
-					unassign
+					unassign,
+					timeline
 				}, {
 					withCredentials: true
 				})
 				dispatch(removeTask(task))
-				dispatch(addTask(data))
+				if(data) {
+					dispatch(addTask({...data, assignedBy : currTask.assignedBy}))
+				}
 				closeModal()
 				toast.success('task updated sucessfully')
 			} catch (error) {
+				if(error.response?.data?.statusCode == 403) {
+					closeModal()
+					dispatch(removeTask(task))
+				}
 				toast.error(error.response?.data?.message || error.message)
 			}
 		}
@@ -210,12 +224,15 @@ function TaskEdit({edit, closeModal, idx}) {
 					priority,
 					dueDate,
 					checklist,
-					members
+					members,
+					timeline
 				}, {
 					withCredentials: true
 				})
 				closeModal()
-				dispatch(addTask(data))
+				if(data) {
+					dispatch(addTask(data))
+				}
 				toast.success('task created sucessfully')
 			} catch (error) {
 				toast.error(error.response?.data?.message || error.message)
@@ -287,7 +304,7 @@ function TaskEdit({edit, closeModal, idx}) {
 					</div>
 				</div>
 
-				{calenderView ?  <Calendar onChange={updateTask.dueDate} value={dueDate} className='taskedit__calender' /> : null}
+				{calenderView ?  <Calendar onChange={updateTask.dueDate} value={dueDate} className='taskedit__calender' minDate={new Date()}  /> : null}
 
 			</div>
 		</ Modal>

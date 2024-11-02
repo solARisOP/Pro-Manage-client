@@ -201,7 +201,7 @@ function SignMode({ mode }) {
             </div>
             <div className='sign__btn__container sign__display'>
                 <button className='sign__btn sign__btn--1' onClick={submitForm}>{mode}</button>
-                <p className='sign__btn__text'>Have no account yet?</p>
+                <p className='sign__btn__text'>{mode === 'Login' ?  'Have no account yet ?' : 'Have an account ?'}</p>
                 <NavLink className='sign__btn sign__btn--2' to={mode === 'Login' ? '/register' : '/login'}>
                     {mode === 'Login' ? 'Register' : 'Login'}
                 </NavLink>

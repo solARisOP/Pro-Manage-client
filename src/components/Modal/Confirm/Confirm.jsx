@@ -25,6 +25,11 @@ function Confirm({closeModal, mode, task}) {
 				closeModal()
 				toast.success('task deleted successfully')
 			} catch (error) {
+				if(error.response?.data?.statusCode == 403) {
+					dispatch(removeTask(task))
+					closeModal()
+					toast.error(error.response?.data?.message || error.message)
+				}
 				console.log(error.response?.data?.message || error.message)
 			}
 		}

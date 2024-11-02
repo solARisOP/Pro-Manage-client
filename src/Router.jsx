@@ -27,12 +27,12 @@ function Router() {
         createRoutesFromElements(
             <Route path='/' element={<App />}>
                 <Route index element={loading ? <Loading /> : user ? <Home /> : <Navigate to='/register' replace /> } />
-                <Route path='/analytics' element={loading ? <Loading /> : user ? <Analytics /> : <Navigate to='/register' replace /> } loader={analyticsLoader} />
+                <Route path='/analytics' element={loading ? <Loading /> : user ? <Analytics /> : <Navigate to='/register' replace /> } loader={analyticsLoader} errorElement={<NotFound />} />
                 <Route path='/settings' element={loading ? <Loading /> : user ? <Update /> : <Navigate to='/register' replace /> } />
                 <Route path='/register' element={loading ? <Loading /> : user ? <Navigate to='/' replace /> : <Auth mode='Register' /> } />
                 <Route path='/login' element={loading ? <Loading /> : user ? <Navigate to='/' replace /> : <Auth mode='Login' /> } />
-                <Route path='/task' element={<Task /> } loader={taskLoader} />
-                <Route path=':blob' element={<NotFound />} />
+                <Route path='/task' element={<Task /> } loader={taskLoader} errorElement={<NotFound />} />
+                <Route path='*' element={<NotFound />} />
             </Route> 
         )
     )

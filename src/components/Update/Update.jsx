@@ -5,7 +5,10 @@ import {
 	passwordIcon, 
 	nameIcon
  } from '../../assets'
-import { useDispatch, useSelector } from 'react-redux'
+import { 
+	useDispatch, 
+	useSelector
+ } from 'react-redux'
 import { useState } from 'react'
 import { toast } from 'react-toastify'
 import axios from 'axios'
@@ -102,8 +105,6 @@ function Update() {
 			toast.error("atleast one field is allowed for updation at a time")
 			return
 		}
-
-		
 		
 		let field;
 		if (formData.email) {
@@ -127,14 +128,14 @@ function Update() {
 		else field = 'name'
 
 		try {
-			const res = await axios.patch(`${apiUrl}/user/${field}`, {
+			const { data : { message } } = await axios.patch(`${apiUrl}/user/${field}`, {
 				content: formData[field],
 				...(field ==='password' && {password : formData.oldPassword})
 			}, {
 				withCredentials: true
 			})
-			dispatch(setUser(null))
-			toast.success(res.data.message)
+			dispatch(setUser(field !== 'name' ? null : {...user, name : formData[field]}))
+			toast.success(message)
 		} catch (error) {
 			toast.error(error.response?.data?.message || error.message)
 			console.log(error);

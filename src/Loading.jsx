@@ -1,8 +1,9 @@
+import './index.css'
 
 function Loading() {
   return (
 		<div className="loading">
-			<p className="not-found-text">server is slow please wait</p>
+			<p className="not-found-text">Loading please wait</p>
     </div>
   )
 }

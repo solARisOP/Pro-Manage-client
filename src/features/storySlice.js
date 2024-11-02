@@ -30,6 +30,7 @@ const storySlice = createSlice({
                 progress : [],
                 done : []
             }
+            console.log(tasks);            
             tasks.forEach(task => state.tasks[task.category].push(task));
         },
         removeTask : (state, action) => {
@@ -40,6 +41,21 @@ const storySlice = createSlice({
             const task = action.payload;
             state.tasks[task.category].push(task)
         },
+        checkUncheck : (state, action) => {
+            const {category, taskId, checklistId} = action.payload
+            state.tasks[category] = state.tasks[category].map(task => {
+                if(task._id == taskId)
+                {
+                    task.checklist = task.checklist.map(todo => {
+                        if(todo._id == checklistId) {
+                            todo.isDone = !todo.isDone
+                        }
+                        return todo
+                    })
+                }
+                return task
+            })
+        },
         changeTimeline : (state, action) => {
             const timeline = action.payload;
             state.feedTimeline = timeline
@@ -47,6 +63,6 @@ const storySlice = createSlice({
     }
 })
 
-export const { setUser, setLoading, setTasks, removeTask, addTask, changeTimeline } = storySlice.actions
+export const { setUser, setLoading, setTasks, removeTask, addTask, checkUncheck, changeTimeline } = storySlice.actions
 
 export default storySlice.reducer
