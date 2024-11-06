@@ -1,1 +1,1 @@
-# [**Client Code**](https://github.com/solARisOP/Pro-Manage-server)
+# [**Server Code**](https://github.com/solARisOP/Pro-Manage-server)
